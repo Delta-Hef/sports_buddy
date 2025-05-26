@@ -111,6 +111,17 @@ class _JoinRoomWidgetState extends State<JoinRoomWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    room.data() != null && (room.data() as Map).containsKey('roomName')
+                        ? '|-| ' + room['roomName']
+                        : '- Unnamed Room',
+                    style: theme.headlineMedium.override(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red.shade700,
+                    ),
+                  ),
+                  SizedBox(height: 8,),
                   Row(
                     children: [
                       Icon(Icons.sports_soccer, color: Color(0xFFF83B46)),

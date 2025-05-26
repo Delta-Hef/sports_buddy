@@ -30,17 +30,22 @@ class _CreateTennisRoomDetailsWidgetState extends State<CreateTennisRoomDetailsW
   late CreateTennisRoomDetailsModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int playerCount = 2;
+  late TextEditingController roomNameController;
   String selectedTime = '7:00 PM - 8:30 PM';
+  final int bookingPrice = 300;
+
   DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => CreateTennisRoomDetailsModel());
+    roomNameController = TextEditingController(); // ✅ Initialize controller
   }
 
   @override
   void dispose() {
+    roomNameController.dispose(); // ✅ Dispose controller
     _model.dispose();
     super.dispose();
   }
@@ -123,6 +128,17 @@ class _CreateTennisRoomDetailsWidgetState extends State<CreateTennisRoomDetailsW
                     ),
                   ),
                 ),
+                SizedBox(height: 12.0,),
+                Text('Room Name', style: FlutterFlowTheme.of(context).titleMedium),
+                SizedBox(height: 7.0),
+                TextField(
+                  controller: roomNameController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter room name',
+                  ),
+                ),
+
                 SizedBox(height: 24.0),
                 Text('Select Date', style: FlutterFlowTheme.of(context).titleMedium),
                 SizedBox(height: 8.0),
@@ -214,9 +230,18 @@ class _CreateTennisRoomDetailsWidgetState extends State<CreateTennisRoomDetailsW
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Total Price', style: FlutterFlowTheme.of(context).titleMedium),
-                    Text('\$${playerCount * 10}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFFFC573C))),
+                    Text('EGP $bookingPrice', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFFFC573C))),
                   ],
                 ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Price per Player', style: FlutterFlowTheme.of(context).titleMedium),
+                    Text('EGP ${(bookingPrice / playerCount).toStringAsFixed(2)}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFFFC573C))),
+                  ],
+                ),
+
                 SizedBox(height: 32.0),
                 FFButtonWidget(
                   onPressed: () async {
@@ -229,8 +254,9 @@ class _CreateTennisRoomDetailsWidgetState extends State<CreateTennisRoomDetailsW
                       'date': Timestamp.fromDate(selectedDate),
                       'timeRange': selectedTime,
                       'maxPlayers': playerCount,
-                      'pricePerPlayer': 10,
-                      'totalPrice': playerCount * 10,
+                      'pricePerPlayer': bookingPrice / playerCount,
+                      'totalPrice': bookingPrice,
+                      'roomName': roomNameController.text.trim(),
                       'creatorId': user.uid,
                       'players': [user.uid],
                       'status': 'pending',

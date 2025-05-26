@@ -71,7 +71,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(
                             30.0, 0.0, 40.0, 24.0),
                         child: Image.asset(
-                          'assets/images/ImageSportBuddy.png',
+                          'assets/images/SecondlogoTany.png',
                           width: 378.4,
                           height: 152.0,
                           fit: BoxFit.none,
@@ -88,7 +88,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   40.0, 0.0, 40.0, 8.0),
                               child: Text(
-                                'Welcome Back',
+                                'Hey Buddy !',
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
                                     .headlineMedium
@@ -124,7 +124,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             .bodyMedium
                                             .fontStyle,
                                       ),
-                                      color: Color(0xFF02548F),
+                                      color: Color(0xFFFFFFFF)
+                                  ,
                                       fontSize: 16.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
@@ -524,7 +525,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         .bodyMedium
                                         .fontStyle,
                                   ),
-                                  color: Color(0xFF02548F),
+                                  color: Color(0xFFFFFFFF),
+
                                   fontSize: 14.0,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.normal,

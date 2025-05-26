@@ -140,7 +140,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         child: Stack(
                           children: [
                             Align(
-                              alignment: AlignmentDirectional(-0.45, 0.44),
+                              alignment: AlignmentDirectional(0, 0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Image.asset(
@@ -223,15 +223,22 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             //     ),
                             //   ),
                             // ),
-                            IconButton(
-                              icon: const Icon(Icons.logout),
-                              onPressed: () async {
-                                await FirebaseAuth.instance.signOut();
-                                if (context.mounted) {
-                                  context.goNamed('login'); 
-                                }
-                              },
+                            Align(
+                              alignment: AlignmentDirectional(1.0, -1.0), // top-right corner
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0), // some padding from edges
+                                child: IconButton(
+                                  icon: const Icon(Icons.logout, color: Colors.white),
+                                  onPressed: () async {
+                                    await FirebaseAuth.instance.signOut();
+                                    if (context.mounted) {
+                                      context.goNamed('login');
+                                    }
+                                  },
+                                ),
+                              ),
                             ),
+
                           ],
                         ),
                       ),
@@ -415,6 +422,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     ),
                   ),
                 ),
+
                 Padding(
                   padding:
                       EdgeInsetsDirectional.fromSTEB(16.0, 24.0, 16.0, 0.0),

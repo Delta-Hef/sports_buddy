@@ -30,7 +30,10 @@ class _CreateRoomDetailsWidgetState extends State<CreateRoomDetailsWidget> {
   late CreateRoomDetailsModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int playerCount = 4;
+  late TextEditingController roomNameController;
   String selectedTime = '';
+  final int bookingPrice = 500;
+
   DateTime selectedDate = DateTime.now();
   List<String> availableSlots = [];
 
@@ -39,10 +42,12 @@ class _CreateRoomDetailsWidgetState extends State<CreateRoomDetailsWidget> {
     super.initState();
     _model = createModel(context, () => CreateRoomDetailsModel());
     fetchAvailableSlots();
+    roomNameController = TextEditingController();
   }
 
   @override
   void dispose() {
+    roomNameController.dispose(); // ✅ Dispose controller
     _model.dispose();
     super.dispose();
   }
@@ -51,6 +56,7 @@ class _CreateRoomDetailsWidgetState extends State<CreateRoomDetailsWidget> {
     final venueName = widget.venue.name;
     final dateKey = DateFormat('yyyy-MM-dd').format(selectedDate);
     final docId = 'football-${widget.venue.name}-$dateKey';
+
 
 
     final doc = await FirebaseFirestore.instance.collection('venue_slots').doc(docId).get();
@@ -144,7 +150,17 @@ class _CreateRoomDetailsWidgetState extends State<CreateRoomDetailsWidget> {
                     ),
                   ),
                 ),
-                SizedBox(height: 24.0),
+                SizedBox(height: 12.0,),
+                Text('Room Name', style: FlutterFlowTheme.of(context).titleMedium),
+                SizedBox(height: 7.0),
+                TextField(
+                  controller: roomNameController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter room name',
+                  ),
+                ),
+                SizedBox(height: 8.0),
 
                 Text('Select Date', style: FlutterFlowTheme.of(context).titleMedium),
                 SizedBox(height: 8.0),
@@ -217,9 +233,18 @@ class _CreateRoomDetailsWidgetState extends State<CreateRoomDetailsWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Total Price', style: FlutterFlowTheme.of(context).titleMedium),
-                    Text('\$${playerCount * 15}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFFFC573C))),
+                    Text('EGP $bookingPrice', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFFFC573C))),
                   ],
                 ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Price per Player', style: FlutterFlowTheme.of(context).titleMedium),
+                    Text('EGP ${(bookingPrice / playerCount).toStringAsFixed(2)}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFFFC573C))),
+                  ],
+                ),
+
                 SizedBox(height: 32.0),
 
                 FFButtonWidget(
@@ -233,8 +258,9 @@ class _CreateRoomDetailsWidgetState extends State<CreateRoomDetailsWidget> {
                       'date': Timestamp.fromDate(selectedDate),
                       'timeRange': selectedTime,
                       'maxPlayers': playerCount,
-                      'pricePerPlayer': 15,
-                      'totalPrice': playerCount * 15,
+                      'pricePerPlayer': bookingPrice / playerCount,
+                      'totalPrice': bookingPrice,
+                      'roomName': roomNameController.text.trim(),
                       'creatorId': user.uid,
                       'players': [user.uid],
                       'status': 'pending',

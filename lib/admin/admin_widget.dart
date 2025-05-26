@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../academies/academies_widget.dart';
 
 class AdminWidget extends StatefulWidget {
   const AdminWidget({super.key});
@@ -135,6 +134,34 @@ class _AdminWidgetState extends State<AdminWidget> {
     }
   }
 
+  Future<void> _confirmDeleteAcademy(String academyId, String? academyName) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Academy'),
+        content: Text('Are you sure you want to delete "$academyName"?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await FirebaseFirestore.instance.collection('academies').doc(academyId).delete();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Deleted "$academyName" successfully')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -251,18 +278,27 @@ class _AdminWidgetState extends State<AdminWidget> {
                       return ListTile(
                         title: Text(data['name'] ?? 'Unnamed'),
                         subtitle: Text(data['sportType'] ?? ''),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            nameController.text = data['name'] ?? '';
-                            descriptionController.text = data['description'] ?? '';
-                            locationController.text = data['location'] ?? '';
-                            ratingController.text = (data['rating'] ?? '').toString();
-                            imageUrlController.text = data['imageUrl'] ?? '';
-                            selectedSport = data['sportType'] ?? 'Football';
-                            editingAcademyId = doc.id;
-                            setState(() {});
-                          },
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () {
+                                nameController.text = data['name'] ?? '';
+                                descriptionController.text = data['description'] ?? '';
+                                locationController.text = data['location'] ?? '';
+                                ratingController.text = (data['rating'] ?? '').toString();
+                                imageUrlController.text = data['imageUrl'] ?? '';
+                                selectedSport = data['sportType'] ?? 'Football';
+                                editingAcademyId = doc.id;
+                                setState(() {});
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () => _confirmDeleteAcademy(doc.id, data['name']),
+                            ),
+                          ],
                         ),
                       );
                     },

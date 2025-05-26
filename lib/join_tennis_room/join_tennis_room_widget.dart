@@ -25,7 +25,7 @@ class _JoinTennisRoomWidgetState extends State<JoinTennisRoomWidget> {
 
   Future<void> fetchAvailableRooms() async {
     final query = await FirebaseFirestore.instance
-        .collection('tennis_rooms') // ← Make sure to change this to football_rooms in the football version
+        .collection('tennis_rooms')
         .where('status', isEqualTo: 'pending')
         .get();
 
@@ -45,19 +45,19 @@ class _JoinTennisRoomWidgetState extends State<JoinTennisRoomWidget> {
     final players = List<String>.from(roomDoc['players']);
     if (players.contains(user.uid)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("You already joined this room.")),
+        const SnackBar(content: Text("You already joined this room.")),
       );
       return;
     }
 
     players.add(user.uid);
     await FirebaseFirestore.instance
-        .collection('tennis_rooms') // ← Same, adjust in football version
+        .collection('tennis_rooms')
         .doc(roomDoc.id)
         .update({'players': players});
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Joined room successfully.")),
+      const SnackBar(content: Text("Joined room successfully.")),
     );
     fetchAvailableRooms();
   }
@@ -68,11 +68,20 @@ class _JoinTennisRoomWidgetState extends State<JoinTennisRoomWidget> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Available Rooms'),
-        backgroundColor: Color(0xFFF83B46),
+        title: const Text('Available Rooms'),
+        backgroundColor: Colors.transparent,
         elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFFF83B46), Color(0xFFFF8A65)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
       ),
-      backgroundColor: theme.primaryBackground,
+      backgroundColor: const Color(0xFFF2F2F2),
       body: ListView.builder(
         itemCount: availableRooms.length,
         padding: const EdgeInsets.all(16),
@@ -80,37 +89,83 @@ class _JoinTennisRoomWidgetState extends State<JoinTennisRoomWidget> {
           final room = availableRooms[index];
           final players = List<String>.from(room['players']);
 
-          return Container(
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
             margin: const EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
+              color: Colors.white.withOpacity(0.9),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.black12,
-                  blurRadius: 6,
-                  offset: Offset(0, 3),
+                  blurRadius: 12,
+                  offset: Offset(0, 6),
                 ),
               ],
+              border: Border.all(color: const Color(0xFFF83B46).withOpacity(0.2)),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(18),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    room['venueName'],
-                    style: theme.headlineSmall.override(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        room.data() != null && (room.data() as Map).containsKey('roomName')
+                            ? '| '+ room['roomName']
+                            : 'Unnamed Room',
+                        style: theme.headlineMedium.override(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red.shade700,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(Icons.sports_tennis, color: const Color(0xFFF83B46)),
+                          const SizedBox(width: 8),
+                          Text(
+                            room['venueName'],
+                            style: theme.headlineSmall.override(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 6),
-                  Text("Location: ${room['venueLocation']}"),
-                  Text("Players: ${players.length}/${room['maxPlayers']}"),
-                  Text("Time: ${room['timeRange']}"),
-                  SizedBox(height: 12),
+
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      const Icon(Icons.location_on, size: 18, color: Colors.grey),
+                      const SizedBox(width: 6),
+                      Text("Location: ${room['venueLocation']}"),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.group, size: 18, color: Colors.grey),
+                      const SizedBox(width: 6),
+                      Text("Players: ${players.length}/${room['maxPlayers']}"),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.schedule, size: 18, color: Colors.grey),
+                      const SizedBox(width: 6),
+                      Text("Time: ${room['timeRange']}"),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: FFButtonWidget(
@@ -119,11 +174,12 @@ class _JoinTennisRoomWidgetState extends State<JoinTennisRoomWidget> {
                       options: FFButtonOptions(
                         width: 140,
                         height: 44,
-                        color: Color(0xFFFB5636),
-                        textStyle: TextStyle(
+                        color: const Color(0xFFF83B46),
+                        textStyle: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
                         ),
+                        elevation: 6,
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
