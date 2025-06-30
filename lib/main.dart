@@ -145,45 +145,58 @@ class _NavBarPageState extends State<NavBarPage> {
 
     return Scaffold(
       body: _currentPage ?? tabs[_currentPageName],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (i) => safeSetState(() {
-          _currentPage = null;
-          _currentPageName = tabs.keys.toList()[i];
-        }),
-        backgroundColor: Color(0xFFFC573C),
-        selectedItemColor: Color(0xFFF6F1F1),
-        unselectedItemColor: Color(0xFF0B0B0B),
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.sports_baseball_outlined,
-              size: 30.0,
-            ),
-            label: 'Sports',
-            tooltip: '',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFF1605F),
+              Color(0xFFF13937),
+              Color(0xFFF34C3C),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.school_outlined,
-              size: 30.0,
+          boxShadow: [ // Optional: subtle shadow for depth
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 8,
+              offset: Offset(0, -1),
             ),
-            label: 'Academies',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.face_6,
-              size: 30.0,
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: currentIndex,
+          onTap: (i) => safeSetState(() {
+            _currentPage = null;
+            _currentPageName = tabs.keys.toList()[i];
+          }),
+          backgroundColor: Colors.transparent, // important for gradient to show
+          elevation: 0, // remove default shadow
+          selectedItemColor: Color(0xFFF6F1F1),
+          unselectedItemColor: Color(0xFF0B0B0B),
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.sports_baseball_outlined, size: 30.0),
+              label: 'Sports',
+              tooltip: '',
             ),
-            label: 'Buddy',
-            tooltip: '',
-          )
-        ],
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school_outlined, size: 30.0),
+              label: 'Academies',
+              tooltip: '',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.face_6, size: 30.0),
+              label: 'Buddy',
+              tooltip: '',
+            ),
+          ],
+        ),
       ),
     );
+
   }
 }

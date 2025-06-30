@@ -54,7 +54,9 @@ class _LoginWidgetState extends State<LoginWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: Color(0xFFFF7063),
+
+
+        backgroundColor: Color(0xFFEF5350),
         body: SafeArea(
           top: true,
           child: Align(
@@ -166,8 +168,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Color(0xFFDADADA),
-                                      width: 1.0,
+                                      color:Colors.black,
+                                      width: 3.0,
                                     ),
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
@@ -248,8 +250,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Color(0xFFDADADA),
-                                      width: 1.0,
+                                      color: Colors.black,
+                                      width: 3.0,
                                     ),
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
@@ -579,5 +581,6 @@ class _LoginWidgetState extends State<LoginWidget> {
         ),
       ),
     );
+
   }
 }

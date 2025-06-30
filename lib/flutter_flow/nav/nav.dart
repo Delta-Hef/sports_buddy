@@ -139,11 +139,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: JoinTennisRoomWidget.routePath,
           builder: (context, params) => JoinTennisRoomWidget(),
         ),
-        FFRoute(
-          name: GameLobbyWidget.routeName,
-          path: GameLobbyWidget.routePath,
-          builder: (context, params) => GameLobbyWidget(),
-        ),
+
         FFRoute(
           name: RequestSentWidget.routeName,
           path: RequestSentWidget.routePath,
@@ -169,36 +165,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         //   path: CreateRoomDetailsCopyWidget.routePath,
         //   builder: (context, params) => CreateRoomDetailsCopyWidget(),
         //),
-        FFRoute(
-          name: TimeFootballWidget.routeName,
-          path: TimeFootballWidget.routePath,
-          builder: (context, params) => TimeFootballWidget(),
-        ),
-        FFRoute(
-          name: TimeTennisWidget.routeName,
-          path: TimeTennisWidget.routePath,
-          builder: (context, params) => TimeTennisWidget(),
-        ),
-        FFRoute(
-          name: GameDescriptionWidget.routeName,
-          path: GameDescriptionWidget.routePath,
-          builder: (context, params) => GameDescriptionWidget(),
-        ),
-        FFRoute(
-          name: MessagesWidget.routeName,
-          path: MessagesWidget.routePath,
-          builder: (context, params) => MessagesWidget(),
-        ),
-        FFRoute(
-          name: FootAcademyAhlyWidget.routeName,
-          path: FootAcademyAhlyWidget.routePath,
-          builder: (context, params) => FootAcademyAhlyWidget(),
-        ),
-        FFRoute(
-          name: TennisAcademyAhlyWidget.routeName,
-          path: TennisAcademyAhlyWidget.routePath,
-          builder: (context, params) => TennisAcademyAhlyWidget(),
-        ),
+
+
+
+
+
         FFRoute(
           name: LoginWidget.routeName,
           path: LoginWidget.routePath,

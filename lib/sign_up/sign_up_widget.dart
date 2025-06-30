@@ -66,7 +66,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: Color(0xFFFF7063),
+        backgroundColor: Color(0xFFEF5350),
         body: SafeArea(
           top: true,
           child: Container(
@@ -825,7 +825,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                           .bodyMedium
                                           .fontStyle,
                                     ),
-                                colors: [Color(0xFFEF3955), Color(0xFF181413)],
+                                colors: [Color(0xFF000000), Color(0xFF000000)],
                                 gradientDirection: GradientDirection.rtl,
                                 gradientType: GradientType.linear,
                               ),
